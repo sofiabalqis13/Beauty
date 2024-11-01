@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Makeup Product List</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #fce4ec;
+      color: #333;
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      width: 250px;
+      background-color: #ffffff;
+      border-right: 2px solid #f48fb1;
+      padding: 20px;
+      box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+      position: fixed;
+      height: 100%;
+      overflow-y: auto;
+    }
+
+    .logo-container {
+      display: flex; 
+      justify-content: center; 
+      margin-bottom: 10px; 
+    }
+
+    .sidebar img {
+      width: 50%; 
+      height: auto; 
+    }
+
+    .sidebar h2 {
+      color: #c2185b;
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+    }
+
+    .sidebar a {
+      color: #c2185b;
+      text-decoration: none;
+      font-weight: bold;
+      display: block; 
+      margin: 10px 0; 
+    }
+
+    .main-content {
+      flex-grow: 1;
+      padding: 20px;
+      margin-left: 250px;
+    }
+
+    .header-container {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    h1 {
+      color: #c2185b;
+      font-size: 2.2rem;
+      margin: 0;
+      font-weight: bold;
+    }
+
+    .btn-container {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    button {
+      background-color: #f8bbd0;
+      color: #ffffff;
+      border: none;
+      border-radius: 20px;
+      padding: 10px 20px;
+      font-size: 1rem;
+      cursor: pointer;
+      margin: 5px;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #f48fb1;
+    }
+
+    #product-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      max-width: 1200px;
+      padding: 0 20px;
+    }
+
+
+    .product {
+      background-color: #ffffff; /* Changed to white */
+      border: 1px solid #ddd; /* Updated border color */
+      border-radius: 15px;
+      padding: 15px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      width: 200px;
+      text-align: center;
+      transition: transform 0.3s;
+    }
+
+    .product:hover {
+      transform: scale(1.05);
+    }
+
+    img {
+      width: 100%;
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+
+    h3 {
+      color: #880e4f;
+      font-size: 1.1rem;
+      margin: 10px 0;
+    }
+
+    p {
+      font-size: 0.9rem;
+      color: #666;
+      margin: 5px 0;
+    }
+
+    a {
+      color: #c2185b;
+      text-decoration: none;
+      font-weight: bold;
+      margin-top: 10px;
+      display: block;
+    }
+
+    .controls-container {
+      display: flex;
+      gap: 20px;
+      margin: 20px 0;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .price-range {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .color-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+
+    .color-box {
+      display: inline-block;
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      margin: 5px;
+      border: 2px solid #ddd;
+      transition: transform 0.3s, box-shadow 0.3s;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .color-box:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .color-box::after {
+      content: attr(title);
+      position: absolute;
+      bottom: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #fff;
+      padding: 2px 5px;
+      font-size: 0.8rem;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      display: none;
+      white-space: nowrap;
+    }
+
+    .color-box:hover::after {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <img src="picture/logo.jpg" alt="Beauty Finder Logo">
+    <h2>Welcome, <span id="user-name">User</span>!</h2>
+    <p>Let's create your favourite cosmetics wishlist with BeautyFinder!</p>
+    <a href="vlogs.html">Beauty Vlogs</a>
+    <a href="about.html">About Us</a>
+    <a href="contact.html">Contact Us</a>
+  </div>
+
+  <div class="main-content">
+    <div class="header-container">
+      <h1>Find Your Favourite Products!</h1>
+      <div class="btn-container">
+        <button onclick="goToWishlist()">Go to Wishlist</button>
+        <button onclick="location.href='index.html'">Back to Welcome Page</button>
+      </div>
+    </div>
+
+    <div class="controls-container">
+      <div>
+        <label for="brand-select">Choose Makeup Brand:</label>
+        <select id="brand-select" onchange="fetchSelectedBrand()">
+          <option value="">Select a Brand</option>
+        </select>
+      </div>
+
+      <!--filter products ikut category-->
+      <div>
+        <label for="category-select">Filter by Category:</label>
+        <select id="category-select" onchange="filterAndSortProducts()">
+          <option value="">All Categories</option>
+          <option value="lipstick">Lipstick</option>
+          <option value="foundation">Foundation</option>
+          <option value="eyeliner">Eyeliner</option>
+          <option value="blush">Blush</option>
+          <option value="mascara">Mascara</option>
+          <option value="nail_polish">Nail Polish</option>
+        </select>
+      </div>
+
+      <!--filter products ikut price range dari minimum price to maximum price-->
+      <div class="price-range">
+        <label for="min-price">Min Price:</label>
+        <input type="number" id="min-price" placeholder="0" oninput="filterAndSortProducts()" />
+        <label for="max-price">Max Price:</label>
+        <input type="number" id="max-price" placeholder="100" oninput="filterAndSortProducts()" />
+      </div>
+    </div>
+
+     <!--display product list-->
+    <div id="product-list"></div>
+  </div>
+
+  <script>
+    let allProducts = []; //array untuk simpan semua fetched products
+
+    //list of available brands dalam dropdown box
+    const availableBrands = [
+      "maybelline", "l'oreal", "clinique", "covergirl", "nyx", "almay", "revlon", 
+      "dior", "chanel", "physicians formula", "smashbox", "milani", "essie", "marc jacobs"
+    ];
+    
+    //populate brand dropdown with available brands
+    function populateBrandDropdown() {
+      const brandSelect = document.getElementById('brand-select');
+      availableBrands.forEach(brand => {
+        const option = document.createElement('option');
+        option.value = brand;
+        option.textContent = brand.charAt(0).toUpperCase() + brand.slice(1);
+        brandSelect.appendChild(option);
+      });
+    }
+
+
+    //fetch products untuk brand yang user pilih
+    function fetchSelectedBrand() {
+      const selectedBrand = document.getElementById('brand-select').value;
+      if (selectedBrand) {
+        fetchProducts(selectedBrand);
+      } else {
+        document.getElementById('product-list').innerHTML = '<p>Please select a brand to display products.</p>';
+      }
+    }
+
+     //fetch products dari API
+    function fetchProducts(brand) {
+      fetch(`http://makeup-api.herokuapp.com/api/v1/products.json?brand=${brand}`)
+        .then(response => response.json())
+        .then(data => {
+          allProducts = data;
+          filterAndSortProducts();
+        })
+        .catch(error => console.error('Error fetching data:', error));
+    }
+
+    //filter and sort products berdasarkan category and price
+    function filterAndSortProducts() {
+      const selectedCategory = document.getElementById('category-select').value;
+      const minPrice = parseFloat(document.getElementById('min-price').value) || 0;
+      const maxPrice = parseFloat(document.getElementById('max-price').value) || Infinity;
+
+      let filteredProducts = allProducts;
+
+      if (selectedCategory) {
+        filteredProducts = filteredProducts.filter(product => product.product_type === selectedCategory);
+      }
+
+      filteredProducts = filteredProducts.filter(product => {
+        const price = parseFloat(product.price) || 0;
+        return price >= minPrice && price <= maxPrice;
+      });
+
+      displayProducts(filteredProducts);
+    }
+
+    //display products on page
+    function displayProducts(products) {
+  const productList = document.getElementById('product-list');
+  productList.innerHTML = ''; 
+
+  if (products.length === 0) {
+    productList.innerHTML = '<p>No products available.</p>';
+    return;
+  }
+
+  products.forEach(product => {
+    const productDiv = document.createElement('div');
+    productDiv.className = 'product';
+
+    
+    const productName = product.name || 'Unknown Product';
+    const productBrand = product.brand || 'Unknown Brand';
+    const productPrice = product.price ? `$${product.price}` : 'Price not available';
+    const productType = product.product_type || 'No type specified';
+    const productRating = product.rating || 'No rating available';
+    const productDescription = sanitizeText(product.description || 'Description not available');
+    const productLink = product.product_link || '#';
+    const websiteLink = product.website_link || '#';
+
+    productDiv.innerHTML = `
+      <img src="${product.image_link || 'placeholder.jpg'}" alt="${productName}" />
+      <h3>${productName}</h3>
+      <p><strong>Brand:</strong> ${productBrand}</p>
+      <p><strong>Price:</strong> ${productPrice}</p>
+      <p><strong>Type:</strong> ${productType}</p>
+      <p><strong>Rating:</strong> ${productRating}</p>
+      <p><strong>Description:</strong> ${productDescription}</p>
+  
+      <div class="color-container">
+        <strong>Colors:</strong>
+        ${product.product_colors && product.product_colors.length > 0 
+          ? product.product_colors.map(color => `
+              <span class="color-box" 
+                    style="background-color: ${color.hex_value}; 
+                           display: inline-block; 
+                           width: 20px; 
+                           height: 20px; 
+                           border-radius: 50%; 
+                           margin: 2px;" 
+                    title="${color.colour_name || 'Unnamed Color'}">
+              </span>
+            `).join('')
+          : 'No colors available.'}
+      </div>
+  
+      <a href="${productLink}" target="_blank">View Product</a>
+      <a href="${websiteLink}" target="_blank">Official Website</a>
+      <button class="add-to-wishlist" data-id="${product.id}">Add to Wishlist</button>
+    `;
+    productList.appendChild(productDiv);
+  
+   
+    productDiv.querySelector('.add-to-wishlist').addEventListener('click', () => {
+      addToWishlist(product);
+    });
+  });
+}
+
+function sanitizeText(text) {
+  const div = document.createElement('div');
+  div.textContent = text; 
+  return div.innerHTML;
+}
+
+ //function add product to wishlist
+function addToWishlist(product) {
+  let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+  
+  //check kalau product dah wujud dalam wishlist dengan tengok product ID
+  if (!wishlist.some(item => item.id === product.id)) {
+    wishlist.push(product);
+    localStorage.setItem('wishlist', JSON.stringify(wishlist));
+    alert(`${product.name} added to wishlist!`);
+  } else {
+    alert(`${product.name} is already in your wishlist!`);
+  }
+}
+
+    function addToWishlist(product) {
+      let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+      if (!wishlist.some(item => item.id === product.id)) {
+        wishlist.push(product);
+        localStorage.setItem('wishlist', JSON.stringify(wishlist));
+        alert(`${product.name} added to wishlist!`);
+      } else {
+        alert(`${product.name} is already in your wishlist!`);
+      }
+    }
+
+    function goToWishlist() {
+      location.href = 'wishlist.html';
+    }
+
+    populateBrandDropdown();
+ 
+    //retrieve user name dari local storage
+    window.onload = function() {
+      const userName = localStorage.getItem('userName'); //ambil user name from local storage
+      const userNameElement = document.getElementById('user-name'); 
+      if (userName) {
+        userNameElement.textContent = userName; //display the user name kalau available
+      }
+    }
+  </script>
+</body>
+</html>

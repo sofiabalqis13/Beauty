@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Welcome to BeautyFinder</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: url('picture/background1.jpg') no-repeat center center fixed; 
+      background-size: cover;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+    }
+
+    h1 {
+      color: #c2185b;
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      font-weight: bold;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); 
+    }
+
+    p {
+      color: #880e4f;
+      font-size: 1.2rem;
+      max-width: 600px;
+      margin: 0 auto 20px;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+    }
+
+    /*Input field styling*/
+    .name-input {
+      padding: 10px;
+      font-size: 1rem;
+      border: 2px solid #c2185b;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      width: 300px;
+    }
+
+    /*Start button styling*/
+    .start-button {
+      background-color: #f8bbd0;
+      color: #ffffff;
+      border: none;
+      border-radius: 20px;
+      padding: 15px 30px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .start-button:hover {
+      background-color: #f48fb1;
+    }
+  </style>
+</head>
+<body>
+  <h1>Welcome to BeautyFinder</h1>
+  <p> Top #1 app to find the best makeup products. Discover, explore, and add your favorites to your wishlist!</p>
+  
+  <!--input field untuk nama-->
+  <input type="text" id="userName" class="name-input" placeholder="Enter your name" />
+
+  <button class="start-button" onclick="startApp()">Start Exploring</button>
+
+  <script>
+    //function untuk start the app
+    function startApp() {
+      const nameInput = document.getElementById('userName');
+      const name = nameInput.value;
+
+      if (name) {
+        localStorage.setItem('userName', name); //save nama user input dalam local storage
+        alert(`Hello, ${name}! Welcome to BeautyFinder.`);
+        location.href = 'makeuplist.html';
+      } else {
+        alert('Please enter your name.');
+      }
+    }
+
+    //retrieve and show user's name kalau wujud dalam local storage
+    window.onload = function() {
+      const storedName = localStorage.getItem('userName');
+      if (storedName) {
+        alert(`Welcome back, ${storedName}!`);
+      }
+    }
+  </script>
+</body>
+</html>
